@@ -10,6 +10,7 @@ from .forms import RecipeForm, IngredientFormSetCreate, IngredientFormSetEdit
 def recipe_list(request):
     view_mode = request.GET.get("view", "mine")
     sort_mode = request.GET.get("sort", "newest")
+    query = request.GET.get("q", "").strip()
 
     if view_mode == "public":
         recipes = Recipe.objects.filter(is_public=True)
@@ -21,6 +22,13 @@ def recipe_list(request):
     
     else:
         recipes = Recipe.objects.filter(owner=request.user)
+
+    if query:
+        recipes = recipes.filter(
+            Q(title__icontains=query) | 
+            Q(description__icontains=query) | 
+            Q(ingredients__name__icontains=query)
+        ).distinct()
 
     recipes = recipes.prefetch_related("ingredients")
 
@@ -36,8 +44,10 @@ def recipe_list(request):
             "recipes": recipes,
             "view_mode": view_mode,
             "sort_mode": sort_mode,
+            "query": query,
         },
     )
+
 
 @login_required
 def recipe_detail(request, slug):

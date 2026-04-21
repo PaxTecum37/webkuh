@@ -11,17 +11,17 @@
         <h1>Recepti:</h1>
 
         <div class="recipes-filter">
-            <a href="{% url 'recipes:list' %}?view=mine"
+            <a href="{% url 'recipes:list' %}?view=mine{% if query %}&q={{ query }}{% endif %}"
                 class="{% if view_mode == 'mine' %}active{% endif %}">
                 Moji
             </a>
 
-            <a href="{% url 'recipes:list' %}?view=public"
+            <a href="{% url 'recipes:list' %}?view=public{% if query %}&q={{ query }}{% endif %}"
                 class="{% if view_mode == 'public' %}active{% endif %}">
                 Javni
             </a>
 
-            <a href="{% url 'recipes:list' %}?view=all"
+            <a href="{% url 'recipes:list' %}?view=all{% if query %}&q={{ query }}{% endif %}"
                 class="{% if view_mode == 'all' %}active{% endif %}">
                 Svi
             </a>
@@ -53,16 +53,30 @@
         <p>Ukupno: <strong>{{ recipes|length }}</strong> recepata</p>
     </div>
 
+    <form method="get" class="recipes-search">
+        <input type="hidden" name="view" value="{{ view_mode }}">
+        <input type="hidden" name="sort" value="{{ sort_mode }}">
+
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Pretraži recepte..."
+        >
+
+        <button type="submit">Traži</button>
+    </form>
+
     <div class="recipes-sort">
 
         <span>Sortiraj</span>
 
-        <a href="?view={{ view_mode }}&sort=newest"
+        <a href="?view={{ view_mode }}&sort=newest{% if query %}&q={{ query }}{% endif %}"
             class="{% if sort_mode == 'newest' %}active{% endif %}">
             Najnoviji
         </a>
 
-        <a href="?view={{ view_mode }}&sort=oldest"
+        <a href="?view={{ view_mode }}&sort=oldest{% if qiery %}&q={{ query }}{% endif %}"
             class="{% if sort_mode == 'oldest' %}active{% endif %}">
             Najstariji
         </a>
