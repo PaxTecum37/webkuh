@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if is_edit %}
+        <h1>Uredi recept: {{ recipe.title }}</h1>
+    {% else %}
+        <h1>Novi Recept</h1>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <h2>Sastojci</h2>
+
+        {{ formset.management_form}}
+
+        <div id="ingredients">
+            {% for f in formset %}
+                {{ f.id }}
+                <div class="margin-form" style="margin-bottom: 12px;">
+                    <div>{{ f.name.label_tag }} {{ f.name }}</div>
+                    <div>{{ f.amount.label_tag }} {{f.amount }}</div>
+
+                    {% if is_edit and f.instance.pk %}
+                        <label style="color:rgb(255, 0, 0);">
+                            {{ f.DELETE }} ✕</label>
+                    {% endif %}
+
+                    {{ f.errors }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <template id="empty-ingredient-template">
+            <div class="ingredient-form" style="margin-bottom: 12px;">
+                <div>{{ formset.empty_form.name.label_tag}} {{ formset.empty_form.name }}</div>
+                <div>{{ formset.empty_form.amount.label_tag }} {{ formset.empty_form.amount }}</div>
+                {{ formset.empty_form.errors }}
+            </div>
+        </template>
+
+        <button type="button" id="add-ingredient">Dodaj sastojak</button>
+
+        <button type="submit">
+            {% if is_edit  %}Spremi promjene{% else %}Spremi{% endif %}
+        </button>    
+    </form>
+    
+    <script>
+    (function () {
+        const addBtn = document.getElementById("add-ingredient");
+        const formsDiv = document.getElementById("ingredients");
+        const template = document.getElementById("empty-ingredient-template");
+
+        // Django managment input = id_<prefix>-TOTAL_FORMS
+        const totalFormsInput = document.getElementById("id_{{ formset.prefix }}-TOTAL_FORMS");
+
+        if (!addBtn || !formsDiv || !template || !totalFormsInput) return;
+
+        addBtn.addEventListener("click", function () {
+            const formIndex = parseInt(totalFormsInput.value, 10);
+
+            const clone = document.importNode(template.content, true);
+
+            // zamijeni __prefix__ u name/id/for atributima
+            clone.querySelectorAll("input, select, textarea, label").forEach(el => {
+                if (el.name) el.name = el.name.replace(/__prefix__/g, formIndex);
+                if (el.id) el.id = el.id.replace(/__prefix__/g, formIndex);
+                if (el.htmlFor) el.htmlForm = el.htmlFor.replace(/__prefix__/g, formIndex);
+            });
+
+            formsDiv.appendChild(clone);
+            totalFormsInput.value = formIndex + 1;
+        });
+    })();
+    </script>
+
+    {% endblock %}

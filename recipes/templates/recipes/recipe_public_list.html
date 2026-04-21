@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Javni recepti</h1>
+
+{% if recipes %}
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+                <a href="{% url 'recipes:public_detail' recipe.slug %}">
+                    {{ recipe.title }}
+                </a>
+                 ({{ recipe.owner.username}})
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nema javnih recepata.</p>
+
+{% endif %}
+{% endblock %}

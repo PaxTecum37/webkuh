@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Recepti | WebKuh{% endblock %}
+
+{% block content %}
+
+<div class="recipes-header">
+
+    <div class="recipes-title-filter">
+
+        <h1>Recepti:</h1>
+
+        <div class="recipes-filter">
+            <a href="{% url 'recipes:list' %}?view=mine"
+                class="{% if view_mode == 'mine' %}active{% endif %}">
+                Moji
+            </a>
+
+            <a href="{% url 'recipes:list' %}?view=public"
+                class="{% if view_mode == 'public' %}active{% endif %}">
+                Javni
+            </a>
+
+            <a href="{% url 'recipes:list' %}?view=all"
+                class="{% if view_mode == 'all' %}active{% endif %}">
+                Svi
+            </a>
+        </div>
+
+    </div>
+
+    <a href="{% url 'recipes:create' %}" class="btn-add-recipe">
+        + Dodaj recept
+    </a>
+
+</div>
+
+<div class="recipes-toolbar">
+
+    <div class="recipes-info">
+
+        {% if view_mode == "mine" %}
+            <p>Prikaz: <strong>Moji recepti</strong></p>
+
+        {% elif view_mode == "public" %}
+            <p>Prikaz: <strong>Javni recepti</strong></p>
+        
+        {% elif view_mode == "all" %}
+            <p>Prikaz: <strong>Svi dostupni recepti</strong></p>
+
+        {% endif %}
+
+        <p>Ukupno: <strong>{{ recipes|length }}</strong> recepata</p>
+    </div>
+
+    <div class="recipes-sort">
+
+        <span>Sortiraj</span>
+
+        <a href="?view={{ view_mode }}&sort=newest"
+            class="{% if sort_mode == 'newest' %}active{% endif %}">
+            Najnoviji
+        </a>
+
+        <a href="?view={{ view_mode }}&sort=oldest"
+            class="{% if sort_mode == 'oldest' %}active{% endif %}">
+            Najstariji
+        </a>
+    </div>
+
+</div>
+
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+        {% if recipe.owner == user %}
+            <a href="{% url 'recipes:detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}" class="recipe-card-link">
+        {% else %}
+            <a href="{% url 'recipes:public_detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}" class="recipe-card-link">
+        {% endif %}
+            <article class="recipe-card">
+
+                <div class="recipe-image">
+                    {% if recipe.image %}
+                        <div class="recipe-image-bg" style="background-image: 
+                            url('{{ recipe.image.url }}');"></div>
+                    {% else %}
+                        <div class="recipe-image-bg"></div>
+                    {% endif %}
+
+                    {% if recipe.is_public %}
+                        <span class="badge badge-public">Public</span>
+                    {% else %}
+                        <span class="badge badge-private">Private</span>
+                    {% endif %}
+
+                    <div class="recipe-image-overlay">
+                        <h3 class="recipe-title">{{ recipe.title }}</h3>
+                    </div>
+                </div>
+
+                <div class="recipe-body">
+                    <p class="recipe-author">By: {{ recipe.owner.username }}</p>
+
+                    {% if recipe.description %}
+                        <p class="recipe-desc">{{ recipe.description|truncatewords:18 }}</p>
+                    {% endif %}
+
+                    <div class="recipe-info">
+                        🥚 {{ recipe.ingredients.count }} sastojaka
+                    </div>
+                </div>
+
+            </article>
+        </a>
+    {% empty %}
+        <p>Nema recepata.</p>
+    {% endfor %}
+</div>
+{% endblock %}

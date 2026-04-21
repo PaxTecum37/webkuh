@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }} | WebKuh{% endblock %}
+
+{% block content %}
+<div class="recipe-detail">
+
+    <h1>{{ recipe.title }}</h1>
+
+    {% if recipe.image %}
+        <div class="recipe-detail-image">
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+        </div>
+    {% endif %}
+
+    <div class="recipe-meta">
+        <p><em>Autor: {{ recipe.owner.username }}</em></p>
+        <p>Vrijeme pripreme: {{ recipe.prep_time_minutes }} min.</p>
+    </div>
+
+    <div class="recipe-section">
+        <h2>Kratki opis</h2>
+        <p>{{ recipe.description|default:"Nema opisa."|linebreaks }}</p>
+    </div>
+
+    <div class="recipe-section">
+        <h2>Sastojci</h2>
+        <ul>
+            {% for ing in recipe.ingredients.all %}
+                <li>{{ ing.name }}{% if ing.amount %} - {{ ing.amount }}{% endif %}</li>
+            {% empty %}
+                <li>Nema sastojaka.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="recipe-section">
+        <h2>Način pripreme</h2>
+        <div>{{ recipe.instructions|default:"Nema uputa za pripremu."|linebreaks }}</div>
+    </div>
+
+    <div class="recipe-actions">
+        {% if user.is_authenticated and user == recipe.owner %}
+            <a href="{% url 'recipes:update' recipe.slug %}">Uredi</a>
+            <a href="{% url 'recipes:recipe_delete_confirm' recipe.slug %}" class="recipe-delete">Obriši</a>
+            {% endif %}
+
+            <a href="{% url 'recipes:list' %}?view={{ request.GET.view|default:'public' }}&sort={{ request.GET.sort|default:'newest' }}">Nazad</a>
+    </div>
+
+</div>
+
+{% endblock %}
