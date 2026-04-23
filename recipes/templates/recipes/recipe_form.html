@@ -1,60 +1,136 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if is_edit %}
-        <h1>Uredi recept: {{ recipe.title }}</h1>
-    {% else %}
-        <h1>Novi Recept</h1>
-    {% endif %}
+<div class="recipe-form-page">
+    <div class="recipe-form-card">
+        {% if is_edit %}
+            <h1>Uredi recept: {{ recipe.title }}</h1>
+        {% else %}
+            <h1>Novi recept</h1>
+        {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+        <form method="post" enctype="multipart/form-data" class="recipe-form">
+            {% csrf_token %}
 
-        {{ form.as_p }}
-
-        <h2>Sastojci</h2>
-
-        {{ formset.management_form}}
-
-        <div id="ingredients">
-            {% for f in formset %}
-                {{ f.id }}
-                <div class="margin-form" style="margin-bottom: 12px;">
-                    <div>{{ f.name.label_tag }} {{ f.name }}</div>
-                    <div>{{ f.amount.label_tag }} {{f.amount }}</div>
-
-                    {% if is_edit and f.instance.pk %}
-                        <label style="color:rgb(255, 0, 0);">
-                            {{ f.DELETE }} ✕</label>
-                    {% endif %}
-
-                    {{ f.errors }}
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
                 </div>
-            {% endfor %}
-        </div>
-
-        <template id="empty-ingredient-template">
-            <div class="ingredient-form" style="margin-bottom: 12px;">
-                <div>{{ formset.empty_form.name.label_tag}} {{ formset.empty_form.name }}</div>
-                <div>{{ formset.empty_form.amount.label_tag }} {{ formset.empty_form.amount }}</div>
-                {{ formset.empty_form.errors }}
+            {% endif %}
+            
+            <div class="form-section">
+                <label for="{{ form.title.id_for_label }}">Naslov</label>
+                {{ form.title }}
+                {{ form.title.errors }}
             </div>
-        </template>
 
-        <button type="button" id="add-ingredient">Dodaj sastojak</button>
+            <div class="form-section">
+                <label for="{{ form.description.id_for_label }}">Opis</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
 
-        <button type="submit">
-            {% if is_edit  %}Spremi promjene{% else %}Spremi{% endif %}
-        </button>    
-    </form>
+            <div class="form-row">
+                <div class="form-section checkbox-section">
+                    <label for="{{ form.is_public.id_for_label }}" class="checkbox-label">
+                        {{ form.is_public }}
+                        Javni recept
+                    </label>
+                    {{ form.is_public.errors }}
+                </div>
+
+                <div class="form-section">
+                    <label for="{{ form.prep_time_minutes.id_for_label }}">Minuta pripreme</label>
+                    {{ form.prep_time_minutes }}
+                    {{ form.prep_time_minutes.errors }}
+                </div>
+            </div>
+
+            {% if form.image %}
+            <div class="form-section">
+                <label for="{{ form.image.id_for_label }}">Slika</label>
+                {{ form.image }}
+                {{ form.image.errors }}
+            </div>
+            {% endif %}
+
+            <div class="form-section">
+                <h2>Sastojci</h2>
+
+                {{ formset.management_form }}
+
+                <div id="ingredients" class="ingredients-list">
+                    {% for f in formset %}
+                        {{ f.id }}
+                        <div class="ingredient-form">
+                            <div class="ingredient-fields">
+                                <div class="form-section">
+                                    <label for="{{ f.name.id_for_label }}">Naziv sastojka</label>
+                                    {{ f.name }}
+                                    {{ f.name.errors }}
+                                </div>
+
+                                <div class="form-section">
+                                    <label for="{{ f.amount.id_for_label }}">Količina</label>
+                                    {{ f.amount  }}
+                                    {{ f.amount.errors }}
+                                </div>
+                            </div>
+
+                            {% if is_edit and f.instance.pk %}
+                                <label class="delete-checkbox">
+                                    {{ f.DELETE }} Obriši sastojak
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <template id="empty-ingredient-template">
+                    <div class="ingredient-form">
+                        <div class="ingredient-fields">
+                            <div class="form-section">
+                                <label for="{{ formset.empty_form.name.id_for_label }}">Naziv sastojka</label>
+                                {{ formset.empty_form.name }}
+                            </div>
+
+                            <div class="form-section">
+                                <label for="{{ formset.empty_form.amount.id_for_label }}">Količina</label>
+                                {{ formset.empty_form.amount }}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            
+                <button type="button" id="add-ingredient" class="btn-secondary">
+                    + Dodaj sastojak
+                </button>
+            </div>
+
+            <div class="form-section">
+                <label for="{{ form.instructions.id_for_label }}">Instrukcije</label>
+                {{ form.instructions }}
+                {{ form.instructions.errors }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    {% if is_edit %}Spremi promjene{% else %}Spremi recept{% endif %}
+                </button>
+
+                <a href="{% url 'recipes:list' %}" class="btn-link-cancel">Odustani</a>
+            </div>
+        </form>
+    </div>
+</div>
     
-    <script>
+<script>
     (function () {
         const addBtn = document.getElementById("add-ingredient");
         const formsDiv = document.getElementById("ingredients");
         const template = document.getElementById("empty-ingredient-template");
 
-        // Django managment input = id_<prefix>-TOTAL_FORMS
+        // Django management input = id_<prefix>-TOTAL_FORMS
         const totalFormsInput = document.getElementById("id_{{ formset.prefix }}-TOTAL_FORMS");
 
         if (!addBtn || !formsDiv || !template || !totalFormsInput) return;
@@ -68,13 +144,13 @@
             clone.querySelectorAll("input, select, textarea, label").forEach(el => {
                 if (el.name) el.name = el.name.replace(/__prefix__/g, formIndex);
                 if (el.id) el.id = el.id.replace(/__prefix__/g, formIndex);
-                if (el.htmlFor) el.htmlForm = el.htmlFor.replace(/__prefix__/g, formIndex);
+                if (el.htmlFor) el.htmlFor = el.htmlFor.replace(/__prefix__/g, formIndex);
             });
 
             formsDiv.appendChild(clone);
             totalFormsInput.value = formIndex + 1;
         });
     })();
-    </script>
+</script>
 
-    {% endblock %}
+{% endblock %}

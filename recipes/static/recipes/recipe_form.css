@@ -1,0 +1,197 @@
+/* =========================
+   RECIPE FORM
+========================= */
+
+
+.recipe-form-page {
+   display: flex;
+   justify-content: center;
+}
+
+.recipe-form-card {
+   width: 100%;
+   max-width: 820px;
+   background: #fffdf9;
+   border-radius: 18px;
+   padding: 30px;
+   box-shadow: 0 12px 30px rgba(120, 90, 40, 0.10);
+}
+
+.recipe-form-card h1 {
+   margin-top: 0;
+   margin-bottom: 24px;
+   color: #222;
+}
+
+.recipe-form {
+   display: flex;
+   flex-direction: column;
+   gap: 22px;
+}
+
+.form-section {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.form-section label {
+   font-weight: 700;
+   color: #333;
+}
+
+.form-row {
+   display: grid;
+   grid-template-columns: 1fr 220px;
+   gap: 18px;
+   align-items: end;
+}
+
+.recipe-form input[type="text"],
+.recipe-form input[type="number"],
+.recipe-form input[type="file"],
+.recipe-form textarea,
+.recipe-form select {
+   width: 100%;
+   box-sizing: border-box;
+   padding: 12px 14px;
+   border: 1px solid #d8cdbd;
+   border-radius: 10px;
+   background: #fff;
+   font-size: 1rem;
+   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recipe-form input[type="text"]:focus,
+.recipe-form input[type="number"]:focus,
+.recipe-form input[type="file"]:focus,
+.recipe-form textarea:focus,
+.recipe-form select:focus {
+   outline: none;
+   border-color: #ff9800;
+   box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.15);
+}
+
+.recipe-form textarea {
+   min-height: 130px;
+   resize: vertical;
+   line-height: 1.5;
+}
+
+.checkbox-section {
+   justify-content: center;
+}
+
+.checkbox-label {
+   display: inline-flex;
+   align-items: center;
+   gap: 10px;
+   font-weight: 600;
+}
+
+.checkbox-label input[type="checkbox"] {
+   width: auto;
+   transform: scale(1.1);
+}
+
+.ingredients-list {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+}
+
+.ingredient-form {
+   background: #faf6ef;
+   border: 1px solid #eadfce;
+   border-radius: 14px;
+   padding: 16px;
+}
+
+.ingredient-fields {
+   display: grid;
+   grid-template-columns: 1fr 220px;
+   gap: 16px;
+}
+
+.delete-checkbox {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   margin-top: 12px;
+   color: #b42318;
+   font-weight: 600;
+}
+
+.form-actions {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   margin-top: 6px;
+}
+
+.btn-primary,
+.btn-secondary {
+   border: none;
+   border-radius: 10px;
+   padding: 12px 18px;
+   font-size: 1rem;
+   font-weight: 700;
+   cursor: pointer;
+   transition: 0.2s ease;
+}
+
+.btn-primary {
+   background: #ff9800;
+   color: white;
+}
+
+.btn-primary:hover {
+   background: #e68900;
+   transform: translateY(-1px);
+}
+
+.btn-secondary {
+   background: #ece7dc;
+   color: #333;
+}
+
+.btn-secondary:hover {
+   background: #e2dacb;
+}
+
+.btn-link-cancel {
+   color: #666;
+   text-decoration: none;
+   font-weight: 600;
+}
+
+.btn-link-cancel:hover {
+   color: #222;
+   text-decoration: underline;
+}
+
+.form-errors,
+.errorlist {
+   color: #b42318;
+}
+
+.errorlist {
+   margin: 0;
+   padding-left: 18px;
+}
+
+@media (max-width: 700px) {
+   .recipe-form-card {
+      padding: 22px;
+   }
+
+   .form-row,
+   .ingredient-fields {
+      grid-template-columns: 1fr;
+   }
+
+   .form-actions {
+      flex-direction: column;
+      align-items: stretch;
+   }
+}

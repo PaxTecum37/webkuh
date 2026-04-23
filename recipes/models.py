@@ -5,7 +5,7 @@ from django.conf import settings
 
 class Recipe(models.Model):
     """
-    Recet je "glavni" entitet.
+    Recept je "glavni" entitet.
 
     Django model = Python klasa koja se mapira na tablicu u bazi.
     Svaki atribut ispod je stupac u tablici.
