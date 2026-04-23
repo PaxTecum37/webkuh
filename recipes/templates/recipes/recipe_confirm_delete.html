@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Obiršti recept</h1>
 
-    <p>Jeste li sigurni da želite obrisati recept:</p>
-    <h3>{{ recipe.title }}</h3>
+<div class="confirm-page">
+    <div class="confirm-card">
+        <h1>Obriši recept</h1>
 
-    <form method="post" action="{% url 'recipes:recipe_delete' recipe.slug %}">
-        {% csrf_token %}
-        <button type="submit" style="background:red; color: white;">
-            Da, obriši
-        </button>
-        <a href="{% url 'recipes:detail' recipe.slug %}">
-            Odustani
-        </a>
-    </form>
+        <p class="confirm-text">
+            Jeste li sigurni da želite obrisati recept:
+        </p>
 
+        <h2 class="confirm-title">
+            {{ recipe.title }}
+        </h2>
+
+        <div class="confirm-actions">
+            <form method="post" action="{% url 'recipes:recipe_delete' recipe.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">
+                    Da, obriši
+                </button>
+            </form>
+                
+            <a href="{% url 'recipes:detail' recipe.slug %}" class="btn-link-cancel">
+                Odustani
+            </a>
+        </div>
+    </div>
+</div>
     {% endblock %}

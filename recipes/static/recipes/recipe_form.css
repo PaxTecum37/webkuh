@@ -195,3 +195,75 @@
       align-items: stretch;
    }
 }
+
+
+/* =========================
+   DELETE CONFIRM
+========================= */
+
+.confirm-page {
+   display: flex;
+   justify-content: center;
+   margin-top: 60px;
+}
+
+.confirm-card {
+   width: 100%;
+   max-width: 600px;
+   background: #fffdf9;
+   border: 1px solid #f0e6d8;
+   border-radius: 16px;
+   padding: 30px;
+   box-shadow: 0 10px 25px rgba(120, 90, 40, 0.10);
+   text-align: center;
+}
+
+.confirm-text {
+   color: #555;
+   margin-bottom: 10px;
+}
+
+.confirm-title {
+   margin-top: 0;
+   margin-bottom: 24px;
+   color: #222;
+}
+
+.confirm-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: nowrap;
+}
+
+.confirm-actions form {
+    margin: 0;
+    width: fit-content;
+    display: inline-block;
+    flex: none;
+}
+
+.confirm-actions button {
+    display: inline-block;
+}
+
+.confirm-actions a {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+}
+
+.btn-danger {
+   background: #e53935;
+   color: white;
+   border: none;
+   border-radius: 10px;
+   padding: 12px 18px;
+   font-weight: 700;
+   cursor: pointer;
+}
+
+.btn-danger:hover {
+   background: #c62828;
+}
