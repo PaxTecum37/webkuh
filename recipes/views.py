@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from .models import Recipe
 from .forms import RecipeForm, IngredientFormSetCreate, IngredientFormSetEdit
@@ -37,14 +38,20 @@ def recipe_list(request):
     else:
         recipes = recipes.order_by("-created_at")
 
+    paginator = Paginator(recipes, 2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request, 
         "recipes/recipe_list.html", 
         {
-            "recipes": recipes,
+            "recipes": page_obj,
+            "page_obj": page_obj,
             "view_mode": view_mode,
             "sort_mode": sort_mode,
             "query": query,
+            "total_recipes": paginator.count,
         },
     )
 

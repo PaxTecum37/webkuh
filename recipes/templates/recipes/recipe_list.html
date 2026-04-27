@@ -50,7 +50,7 @@
 
         {% endif %}
 
-        <p>Ukupno: <strong>{{ recipes|length }}</strong> recepata</p>
+        <p>Ukupno: <strong>{{ total_recipes }}</strong> recepata</p>
     </div>
 
     <form method="get" class="recipes-search">
@@ -76,7 +76,7 @@
             Najnoviji
         </a>
 
-        <a href="?view={{ view_mode }}&sort=oldest{% if qiery %}&q={{ query }}{% endif %}"
+        <a href="?view={{ view_mode }}&sort=oldest{% if query %}&q={{ query }}{% endif %}"
             class="{% if sort_mode == 'oldest' %}active{% endif %}">
             Najstariji
         </a>
@@ -87,9 +87,9 @@
 <div class="recipe-grid">
     {% for recipe in recipes %}
         {% if recipe.owner == user %}
-            <a href="{% url 'recipes:detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}" class="recipe-card-link">
+            <a href="{% url 'recipes:detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
         {% else %}
-            <a href="{% url 'recipes:public_detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}" class="recipe-card-link">
+            <a href="{% url 'recipes:public_detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
         {% endif %}
             <article class="recipe-card">
 
@@ -130,4 +130,35 @@
         <p>Nema recepata.</p>
     {% endfor %}
 </div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination">
+
+        {% if page_obj.has_previous %}
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page=1">
+                &laquo; Prva
+            </a>
+
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.previous_page_number }}">
+                Prethodna
+            </a>
+        {% endif %}
+
+        <span>
+            Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages  }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.next_page_number }}">
+                Sljedeća
+            </a>
+
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.paginator.num_pages }}">
+                Zadnja &raquo;
+            </a>
+        {% endif %}
+    
+    </div>
+{% endif %}
+
 {% endblock %}
