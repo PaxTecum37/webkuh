@@ -14,7 +14,15 @@
     {% endif %}
 
     <div class="recipe-meta">
-        Vrijeme pripreme: {{ recipe.prep_time_minutes}} min.
+        <span> Vrijeme pripreme: {{ recipe.prep_time_minutes}} min.</span>
+
+        <form method="post" action="{% url 'recipes:toggle_favorite' recipe.slug %}" class="favorite-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit" class="favorite-button">
+                {% if is_favorite %}♥{% else %}♡{% endif %}
+            </button>
+        </form>
     </div>
 
     <div class="recipe-section">

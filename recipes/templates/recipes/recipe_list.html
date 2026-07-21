@@ -16,9 +16,9 @@
                 Moji
             </a>
 
-            <a href="{% url 'recipes:list' %}?view=public{% if query %}&q={{ query }}{% endif %}"
-                class="{% if view_mode == 'public' %}active{% endif %}">
-                Javni
+            <a href="{% url 'recipes:list' %}?view=favorites{% if query %}&q={{ query }}{% endif %}"
+                class="{% if view_mode == 'favorites' %}active{% endif %}">
+                Omiljeni
             </a>
 
             <a href="{% url 'recipes:list' %}?view=all{% if query %}&q={{ query }}{% endif %}"
@@ -42,11 +42,11 @@
         {% if view_mode == "mine" %}
             <p>Prikaz: <strong>Moji recepti</strong></p>
 
-        {% elif view_mode == "public" %}
-            <p>Prikaz: <strong>Javni recepti</strong></p>
+        {% elif view_mode == "favorites" %}
+            <p>Prikaz: <strong>Omiljeni recepti</strong></p>
         
         {% elif view_mode == "all" %}
-            <p>Prikaz: <strong>Svi dostupni recepti</strong></p>
+            <p>Prikaz: <strong>Svi javni recepti drugih korisnika</strong></p>
 
         {% endif %}
 

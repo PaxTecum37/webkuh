@@ -9,12 +9,11 @@ urlpatterns = [
     path("add/", views.recipe_create, name="create"),
     path("placeholder/", views.placeholder_page, name="placeholder"),
     path("public/<slug:slug>/", views.recipe_public_detail, name="public_detail"),
-    
+
+    path("<slug:slug>/favorite/", views.toggle_favorite, name="toggle_favorite"),
     path("<slug:slug>/edit/", views.recipe_update, name="update"),
     path("<slug:slug>/delete/", views.recipe_delete_confirm, name="recipe_delete_confirm"),
     path("<slug:slug>/delete/confirm/", views.recipe_delete, name="recipe_delete"),
     path("<slug:slug>/", views.recipe_detail, name="detail"),
-    
-    
     
 ]

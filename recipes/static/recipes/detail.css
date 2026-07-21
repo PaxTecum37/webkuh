@@ -20,8 +20,23 @@
 }
 
 .recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: #777;
     margin-bottom: 20px;
+}
+
+.favorite-form {
+    margin: 0;
+}
+
+.favorite-button {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    color: #c94b45;
 }
 
 .recipe-meta p {
