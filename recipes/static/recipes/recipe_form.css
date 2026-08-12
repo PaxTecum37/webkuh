@@ -94,6 +94,25 @@
    transform: scale(1.1);
 }
 
+.current-image-row,
+.clear-image-row,
+.chamge-image-row {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   flex-wrap: wrap;
+}
+
+.clear-image-row {
+   font-weight: 700;
+   color: #333;
+}
+
+.clear-image-row input[type="checkbox"] {
+   width: auto;
+   margin: 0;
+}
+
 .ingredients-list {
    display: flex;
    flex-direction: column;

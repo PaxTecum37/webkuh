@@ -47,10 +47,30 @@
             </div>
 
             {% if form.image %}
-            <div class="form-section">
+            <div class="form-section image-upload-section">
                 <label for="{{ form.image.id_for_label }}">Slika</label>
-                {{ form.image }}
+
+                {% if is_edit and recipe.image %}
+                    <div class="current-image-row">
+                        <span>Trenutna slika:</span>
+                        <a href="{{ recipe.image.url }}" target="_blank">
+                            {{ recipe.image.name }}
+                        </a>
+                    </div>
+
+                    <label class="clear-image-row" for="image-clear_id">
+                        <input type="checkbox" name="image-clear" id="image-clear_id">
+                        Obriši trenutnu sliku
+                    </label>
+                {% endif %}
+
+                <div class="change-image-row">
+                    <span>Nova slika:</span>
+                    <input type="file" name="image" id="{{ form.image.id_for_label }}" accept="image/*">
+                </div>
+
                 {{ form.image.errors }}
+
             </div>
             {% endif %}
 

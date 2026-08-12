@@ -101,8 +101,8 @@ def recipe_update(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug, owner=request.user)
 
     if request.method =="POST":
-        form = RecipeForm(request.POST, instance=recipe)
-        formset = IngredientFormSetEdit(request.POST, request.FILES, instance=recipe)
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
+        formset = IngredientFormSetEdit(request.POST, instance=recipe)
 
         if form.is_valid() and formset.is_valid():
             form.save()
