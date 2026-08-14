@@ -64,6 +64,25 @@ nav a:hover {
     flex-grow: 1;
 }
 
+.recipe-card-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.recipe-card-meta-row .recipe-author {
+    margin: 0;
+}
+
+.favorite-card-icon {
+    color: #c94b45;
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
 .recipe-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 18px 45px rgba(120,90,40,0.18);

@@ -113,7 +113,13 @@
                 </div>
 
                 <div class="recipe-body">
-                    <p class="recipe-author">By: {{ recipe.owner.username }}</p>
+                    <div class="recipe-card-meta-row">
+                        <p class="recipe-author">By: {{ recipe.owner.username }}</p>
+
+                        {% if recipe.id in favorite_recipe_ids %}
+                            <span class="favorite-card-icon" title="Omiljeni recept">♥</span>
+                        {% endif %}
+                    </div>
 
                     {% if recipe.description %}
                         <p class="recipe-desc">{{ recipe.description|truncatewords:18 }}</p>

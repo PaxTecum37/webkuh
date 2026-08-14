@@ -49,6 +49,11 @@ def recipe_list(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    favorite_recipe_ids = set(
+        Favorite.objects.filter(user=request.user)
+        .values_list("recipe_id", flat=True)
+    )
+
     return render(
         request, 
         "recipes/recipe_list.html", 
@@ -59,6 +64,7 @@ def recipe_list(request):
             "sort_mode": sort_mode,
             "query": query,
             "total_recipes": paginator.count,
+            "favorite_recipe_ids": favorite_recipe_ids,
         },
     )
 
