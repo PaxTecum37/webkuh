@@ -14,7 +14,11 @@
     {% endif %}
 
     <div class="recipe-meta">
-        <span> Vrijeme pripreme: {{ recipe.prep_time_minutes}} min.</span>
+        <div>
+            <p>Kategorija: {{ recipe.get_category_display }}</p>
+            <p>Vrijeme pripreme: {{ recipe.prep_time_minutes }} min.</p>
+        </div>
+        
 
         <form method="post" action="{% url 'recipes:toggle_favorite' recipe.slug %}" class="favorite-form">
             {% csrf_token %}

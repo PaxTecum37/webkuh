@@ -11,17 +11,17 @@
         <h1>Recepti:</h1>
 
         <div class="recipes-filter">
-            <a href="{% url 'recipes:list' %}?view=mine{% if query %}&q={{ query }}{% endif %}"
+            <a href="{% url 'recipes:list' %}?view=mine&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}"
                 class="{% if view_mode == 'mine' %}active{% endif %}">
                 Moji
             </a>
 
-            <a href="{% url 'recipes:list' %}?view=favorites{% if query %}&q={{ query }}{% endif %}"
+            <a href="{% url 'recipes:list' %}?view=favorites&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}"
                 class="{% if view_mode == 'favorites' %}active{% endif %}">
                 Omiljeni
             </a>
 
-            <a href="{% url 'recipes:list' %}?view=all{% if query %}&q={{ query }}{% endif %}"
+            <a href="{% url 'recipes:list' %}?view=all&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}"
                 class="{% if view_mode == 'all' %}active{% endif %}">
                 Svi
             </a>
@@ -56,6 +56,14 @@
     <form method="get" class="recipes-search">
         <input type="hidden" name="view" value="{{ view_mode }}">
         <input type="hidden" name="sort" value="{{ sort_mode }}">
+        <select name="category">
+            <option value="">Sve kategorije</option>
+            {% for value, label in category_choices %}
+                <option value="{{ value }}" {% if category == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
 
         <input
             type="text"
@@ -71,12 +79,12 @@
 
         <span>Sortiraj</span>
 
-        <a href="?view={{ view_mode }}&sort=newest{% if query %}&q={{ query }}{% endif %}"
+        <a href="?view={{ view_mode }}&sort=newest{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}"
             class="{% if sort_mode == 'newest' %}active{% endif %}">
             Najnoviji
         </a>
 
-        <a href="?view={{ view_mode }}&sort=oldest{% if query %}&q={{ query }}{% endif %}"
+        <a href="?view={{ view_mode }}&sort=oldest{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}"
             class="{% if sort_mode == 'oldest' %}active{% endif %}">
             Najstariji
         </a>
@@ -87,9 +95,9 @@
 <div class="recipe-grid">
     {% for recipe in recipes %}
         {% if recipe.owner == user %}
-            <a href="{% url 'recipes:detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
+            <a href="{% url 'recipes:detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
         {% else %}
-            <a href="{% url 'recipes:public_detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
+            <a href="{% url 'recipes:public_detail' recipe.slug %}?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page={{ page_obj.number }}" class="recipe-card-link">
         {% endif %}
             <article class="recipe-card">
 
@@ -126,7 +134,8 @@
                     {% endif %}
 
                     <div class="recipe-info">
-                        🥚 {{ recipe.ingredients.count }} sastojaka
+                        <span>🥚 {{ recipe.ingredients.count }} sastojaka</span>
+                        <span>{{ recipe.get_category_display }}</span>
                     </div>
                 </div>
 
@@ -141,11 +150,11 @@
     <div class="pagination">
 
         {% if page_obj.has_previous %}
-            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page=1">
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page=1">
                 &laquo; Prva
             </a>
 
-            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.previous_page_number }}">
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page={{ page_obj.previous_page_number }}">
                 Prethodna
             </a>
         {% endif %}
@@ -155,11 +164,11 @@
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.next_page_number }}">
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page={{ page_obj.next_page_number }}">
                 Sljedeća
             </a>
 
-            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}&page={{ page_obj.paginator.num_pages }}">
+            <a href="?view={{ view_mode }}&sort={{ sort_mode }}{% if query %}&q={{ query }}{% endif %}{% if category %}&category={{ category }}{% endif %}&page={{ page_obj.paginator.num_pages }}">
                 Zadnja &raquo;
             </a>
         {% endif %}

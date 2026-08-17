@@ -16,6 +16,7 @@
     <div class="recipe-meta">
         <div>
             <p><em>Autor: {{ recipe.owner.username }}</em></p>
+            <p>Kategorija: {{ recipe.get_category_display }}</p>
             <p>Vrijeme pripreme: {{ recipe.prep_time_minutes }} min.</p>
         </div>
 

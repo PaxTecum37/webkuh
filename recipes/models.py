@@ -10,6 +10,15 @@ class Recipe(models.Model):
     Django model = Python klasa koja se mapira na tablicu u bazi.
     Svaki atribut ispod je stupac u tablici.
     """
+
+    CATEGORY_CHOICES = [
+        ("torte", "Torte"),
+        ("kolaci", "Kolači"),
+        ("keksi", "Keksi"),
+        ("dizana_lisnata_tijesta", "Dizana i lisnata tijesta"),
+        ("zamrznuti_deserti", "Zamrznuti deserti"),
+        ("ostalo", "Ostalo"),
+    ]
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -22,6 +31,12 @@ class Recipe(models.Model):
     slug = models.SlugField(max_length=220, unique=True, blank=True)
 
     description = models.TextField(blank=True)
+
+    category = models.CharField(
+        max_length=40,
+        choices=CATEGORY_CHOICES,
+        default="ostalo",
+    )
 
     instructions = models.TextField(blank=True)
 

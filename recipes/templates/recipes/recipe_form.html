@@ -30,6 +30,12 @@
                 {{ form.description.errors }}
             </div>
 
+            <div class="form-section">
+                <label for="{{ form.category.id_for_label }}">Kategorija</label>
+                {{ form.category }}
+                {{ form.category.errors }}
+            </div>
+
             <div class="form-row">
                 <div class="form-section checkbox-section">
                     <label for="{{ form.is_public.id_for_label }}" class="checkbox-label">

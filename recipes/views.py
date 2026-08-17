@@ -13,6 +13,7 @@ def recipe_list(request):
     view_mode = request.GET.get("view", "mine")
     sort_mode = request.GET.get("sort", "newest")
     query = request.GET.get("q", "").strip()
+    category = request.GET.get("category", "").strip()
 
     if view_mode == "all":
         recipes = Recipe.objects.filter(
@@ -37,6 +38,9 @@ def recipe_list(request):
             Q(description__icontains=query) | 
             Q(ingredients__name__icontains=query)
         ).distinct()
+
+    if category:
+        recipes = recipes.filter(category=category)
 
     recipes = recipes.prefetch_related("ingredients")
 
@@ -65,6 +69,8 @@ def recipe_list(request):
             "query": query,
             "total_recipes": paginator.count,
             "favorite_recipe_ids": favorite_recipe_ids,
+            "category": category,
+            "category_choices": Recipe.CATEGORY_CHOICES,
         },
     )
 
