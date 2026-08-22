@@ -29,6 +29,23 @@
 
     </div>
 
+    <form method="get" class="recipes-search">
+        <input type="hidden" name="view" value="{{ view_mode }}">
+        <input type="hidden" name="sort" value="{{ sort_mode }}">
+        {% if category %}
+            <input type="hidden" name="category" value="{{ category }}">
+        {% endif %}
+
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Pretraži recepte..."
+        >
+
+        <button type="submit">Traži</button>
+    </form>
+
     <a href="{% url 'recipes:create' %}" class="btn-add-recipe">
         + Dodaj recept
     </a>
@@ -53,9 +70,13 @@
         <p>Ukupno: <strong>{{ total_recipes }}</strong> recepata</p>
     </div>
 
-    <form method="get" class="recipes-search">
-        <input type="hidden" name="view" value="{{ view_mode }}">
-        <input type="hidden" name="sort" value="{{ sort_mode }}">
+    <form method="get" class="recipes-category">
+        <input type="hidden" name="view" value="{{ view_mode}}">
+        <input type="hidden" name="sort" value="{{ sort_mode}}">
+        {% if query %}
+            <input type="hidden" name="q" value="{{ query }}">
+        {% endif %}
+
         <select name="category">
             <option value="">Sve kategorije</option>
             {% for value, label in category_choices %}
@@ -64,15 +85,6 @@
                 </option>
             {% endfor %}
         </select>
-
-        <input
-            type="text"
-            name="q"
-            value="{{ query }}"
-            placeholder="Pretraži recepte..."
-        >
-
-        <button type="submit">Traži</button>
     </form>
 
     <div class="recipes-sort">
