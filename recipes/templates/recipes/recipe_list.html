@@ -71,13 +71,13 @@
     </div>
 
     <form method="get" class="recipes-category">
-        <input type="hidden" name="view" value="{{ view_mode}}">
-        <input type="hidden" name="sort" value="{{ sort_mode}}">
+        <input type="hidden" name="view" value="{{ view_mode }}">
+        <input type="hidden" name="sort" value="{{ sort_mode }}">
         {% if query %}
             <input type="hidden" name="q" value="{{ query }}">
         {% endif %}
 
-        <select name="category">
+        <select name="category" onchange="this.form.submit()">
             <option value="">Sve kategorije</option>
             {% for value, label in category_choices %}
                 <option value="{{ value }}" {% if category == value %}selected{% endif %}>
