@@ -49,7 +49,7 @@ def recipe_list(request):
     else:
         recipes = recipes.order_by("-created_at")
 
-    paginator = Paginator(recipes, 2)
+    paginator = Paginator(recipes, 12)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 

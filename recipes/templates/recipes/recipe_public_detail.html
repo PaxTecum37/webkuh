@@ -56,7 +56,7 @@
             <a href="{% url 'recipes:recipe_delete_confirm' recipe.slug %}" class="recipe-delete">Obriši</a>
             {% endif %}
 
-            <a href="{% url 'recipes:list' %}?view={{ request.GET.view|default:'all' }}&sort={{ request.GET.sort|default:'newest' }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}">Nazad</a>
+            <a href="{% url 'recipes:list' %}?view={{ request.GET.view|default:'all' }}&sort={{ request.GET.sort|default:'newest' }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.page %}&page={{ request.GET.page }}{% endif %}">Nazad</a>
     </div>
 
 </div>
